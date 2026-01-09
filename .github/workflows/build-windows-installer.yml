@@ -30,7 +30,7 @@ jobs:
     - name: Setup Node.js 18
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '18'  # CI uses Node 18; local dev supports up to Node 24
         cache: 'npm'
 
     - name: Install Inno Setup
