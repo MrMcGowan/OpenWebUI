@@ -1,87 +1,53 @@
-import i18next from 'i18next';
-import resourcesToBackend from 'i18next-resources-to-backend';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import type { i18n as i18nType } from 'i18next';
-import { writable } from 'svelte/store';
+import { writable, type Writable } from 'svelte/store';
+import translations from './locales/en-US/translation.json';
 
-const createI18nStore = (i18n: i18nType) => {
-	const i18nWritable = writable(i18n);
+// Simple English-only i18n implementation
+// This replaces the full i18next library with a lightweight passthrough
 
-	i18n.on('initialized', () => {
-		i18nWritable.set(i18n);
+export interface SimpleI18n {
+	t: (key: string, options?: Record<string, any>) => string;
+	language: string;
+}
+
+// Template string interpolation helper
+const interpolate = (str: string, params?: Record<string, any>): string => {
+	if (!params) return str;
+	return str.replace(/\{\{(\w+)\}\}/g, (match, key) => {
+		return params[key] !== undefined ? String(params[key]) : match;
 	});
-	i18n.on('loaded', () => {
-		i18nWritable.set(i18n);
-	});
-	i18n.on('added', () => i18nWritable.set(i18n));
-	i18n.on('languageChanged', () => {
-		i18nWritable.set(i18n);
-	});
-	return i18nWritable;
 };
 
-const createIsLoadingStore = (i18n: i18nType) => {
-	const isLoading = writable(false);
-
-	// if loaded resources are empty || {}, set loading to true
-	i18n.on('loaded', (resources) => {
-		// console.log('loaded:', resources);
-		isLoading.set(Object.keys(resources).length === 0);
-	});
-
-	// if resources failed loading, set loading to true
-	i18n.on('failedLoading', () => {
-		isLoading.set(true);
-	});
-
-	return isLoading;
+// Translation function - uses en-US translations or returns key if not found
+const translate = (key: string, options?: Record<string, any>): string => {
+	const translation = translations[key as keyof typeof translations];
+	const text = translation || key;
+	return interpolate(text, options);
 };
+
+// Create a simple i18n object that mimics the i18next API
+const simpleI18n: SimpleI18n = {
+	t: translate,
+	language: 'en-US'
+};
+
+// Create a Svelte store
+const i18nStore: Writable<SimpleI18n> = writable(simpleI18n);
 
 export const initI18n = (defaultLocale?: string | undefined) => {
-	const detectionOrder = defaultLocale
-		? ['querystring', 'localStorage']
-		: ['querystring', 'localStorage', 'navigator'];
-	const fallbackDefaultLocale = defaultLocale ? [defaultLocale] : ['en-US'];
-
-	const loadResource = (language: string, namespace: string) =>
-		import(`./locales/${language}/${namespace}.json`);
-
-	i18next
-		.use(resourcesToBackend(loadResource))
-		.use(LanguageDetector)
-		.init({
-			debug: false,
-			detection: {
-				order: detectionOrder,
-				caches: ['localStorage'],
-				lookupQuerystring: 'lang',
-				lookupLocalStorage: 'locale'
-			},
-			fallbackLng: {
-				default: fallbackDefaultLocale
-			},
-			ns: 'translation',
-			returnEmptyString: false,
-			interpolation: {
-				escapeValue: false // not needed for svelte as it escapes by default
-			}
-		});
-
-	const lang = i18next?.language || defaultLocale || 'en-US';
-	document.documentElement.setAttribute('lang', lang);
+	// Always use en-US
+	document.documentElement.setAttribute('lang', 'en-US');
 };
 
-const i18n = createI18nStore(i18next);
-const isLoadingStore = createIsLoadingStore(i18next);
-
+// Stub function for compatibility
 export const getLanguages = async () => {
-	const languages = (await import(`./locales/languages.json`)).default;
-	return languages;
-};
-export const changeLanguage = (lang: string) => {
-	document.documentElement.setAttribute('lang', lang);
-	i18next.changeLanguage(lang);
+	return [{ code: 'en-US', title: 'English (US)' }];
 };
 
-export default i18n;
-export const isLoading = isLoadingStore;
+// Stub function for compatibility
+export const changeLanguage = (lang: string) => {
+	// No-op - always English
+	document.documentElement.setAttribute('lang', 'en-US');
+};
+
+export default i18nStore;
+export const isLoading = writable(false);

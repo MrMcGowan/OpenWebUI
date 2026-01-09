@@ -5,13 +5,13 @@
 
 	import { getContext, onDestroy, onMount, tick } from 'svelte';
 	import { fade } from 'svelte/transition';
-	const i18n: Writable<i18nType> = getContext('i18n');
+	import { get, type Unsubscriber, type Writable } from 'svelte/store';
+	import type { SimpleI18n } from '$lib/i18n';
+
+	const i18n: Writable<SimpleI18n> = getContext('i18n');
 
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-
-	import { get, type Unsubscriber, type Writable } from 'svelte/store';
-	import type { i18n as i18nType } from 'i18next';
 	import { WEBUI_BASE_URL } from '$lib/constants';
 
 	import {

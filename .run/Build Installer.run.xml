@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Build Installer" type="PowerShellRunType" factoryName="PowerShell">
+    <option name="scriptPath" value="$PROJECT_DIR$/build_installer.ps1" />
+    <option name="workingDirectory" value="$PROJECT_DIR$" />
+    <option name="scriptParameters" value="" />
+    <option name="executionMode" value="File" />
+    <method v="2" />
+  </configuration>
+</component>
+

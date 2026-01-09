@@ -5,7 +5,7 @@ python-multipart==0.0.21
 itsdangerous==2.2.0
 
 # Windows Service Support
-pywin32==306; sys_platform == 'win32'
+pywin32>=310; sys_platform == 'win32'
 
 python-socketio==5.15.1
 python-jose==3.5.0

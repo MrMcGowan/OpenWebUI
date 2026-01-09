@@ -5,9 +5,9 @@
 	import { createEventDispatcher, onDestroy } from 'svelte';
 	import { onMount, tick, getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
-	import type { i18n as i18nType, t } from 'i18next';
+	import type { SimpleI18n } from '$lib/i18n';
 
-	const i18n = getContext<Writable<i18nType>>('i18n');
+	const i18n = getContext<Writable<SimpleI18n>>('i18n');
 
 	const dispatch = createEventDispatcher();
 

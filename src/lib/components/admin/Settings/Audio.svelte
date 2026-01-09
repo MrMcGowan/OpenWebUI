@@ -18,10 +18,10 @@
 	import { TTS_RESPONSE_SPLIT } from '$lib/types';
 
 	import type { Writable } from 'svelte/store';
-	import type { i18n as i18nType } from 'i18next';
+	import type { SimpleI18n } from '$lib/i18n';
 	import Textarea from '$lib/components/common/Textarea.svelte';
 
-	const i18n = getContext<Writable<i18nType>>('i18n');
+	const i18n = getContext<Writable<SimpleI18n>>('i18n');
 
 	export let saveHandler: () => void;
 
