@@ -279,6 +279,7 @@ Windows runners consume minutes at 2x rate:
 7. **Monitor builds** - Check Actions tab regularly for failures
 
 ## Related Links
+- [GitHub Actions Troubleshooting](github-actions-troubleshooting.md)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 - [Windows Runner Documentation](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners)
 - [Build Guide](build-guide.md)
