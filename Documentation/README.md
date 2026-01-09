@@ -8,13 +8,19 @@ This directory contains comprehensive documentation for Open WebUI on Windows Se
 
 ### Installation & Setup
 
-- **[Windows Installation Guide](../Documentation/windows-installation.md)** - Complete installation instructions using setup.exe
-- **[Build Guide](../Documentation/build-guide.md)** - How to build the installer from source
+- **[Windows Installation Guide](windows-installation.md)** - Complete installation instructions using setup.exe
+- **[Build Guide](build-guide.md)** - How to build the installer from source
+
+### Automated Builds
+
+- **[GitHub Actions Quick Start](github-actions-quick-start.md)** - Quick guide to automated installer builds
+- **[GitHub Actions Guide](github-actions.md)** - Detailed GitHub Actions workflow documentation
+- **[GitHub Actions Troubleshooting](github-actions-troubleshooting.md)** - Common workflow issues and fixes
 
 ### Configuration & Management
 
-- **[Configuration Guide](../Documentation/configuration.md)** - Detailed configuration options
-- **[Quick Reference Guide](../Documentation/quick-reference.md)** - Common commands and tasks
+- **[Configuration Guide](configuration.md)** - Detailed configuration options
+- **[Quick Reference Guide](quick-reference.md)** - Common commands and tasks
 - **[Troubleshooting Guide](../TROUBLESHOOTING.md)** - Common issues and solutions
 
 ### Security & Compliance
@@ -26,12 +32,12 @@ This directory contains comprehensive documentation for Open WebUI on Windows Se
 
 ### For End Users
 
-1. Download `OpenWebUI-Setup-{version}-Win64.exe`
+1. Download `OpenWebUI-Setup-{version}-Win64.exe` from Actions or Releases
 2. Run as Administrator
 3. Follow installation wizard
 4. Access at `http://localhost:8080`
 
-See [Windows Installation Guide](../Documentation/windows-installation.md) for details.
+See [Windows Installation Guide](windows-installation.md) for details.
 
 ### For Developers
 
@@ -39,7 +45,15 @@ See [Windows Installation Guide](../Documentation/windows-installation.md) for d
 2. Run `.\build_installer.ps1`
 3. Installer created in `installer\output\`
 
-See [Build Guide](../Documentation/build-guide.md) for details.
+See [Build Guide](build-guide.md) for details.
+
+### For CI/CD
+
+1. Push code to `main` or `develop` branch
+2. GitHub Actions automatically builds installer
+3. Download from Actions tab artifacts
+
+See [GitHub Actions Quick Start](github-actions-quick-start.md) for details.
 
 ## System Requirements
 

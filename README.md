@@ -1,6 +1,5 @@
 # Open WebUI for Windows Server 2022 👋
 
-![Build Status](https://github.com/YOUR_USERNAME/YOUR_REPO/workflows/Build%20Windows%20Installer/badge.svg)
 ![Windows Server 2022](https://img.shields.io/badge/Windows%20Server-2022-blue?logo=windows&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.11+-blue?logo=python&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
@@ -99,15 +98,17 @@ The easiest way to install Open WebUI on Windows Server 2022:
 
 **Option A: From Releases (Stable)**
 
-1. Go to the [Releases page](https://github.com/YOUR_USERNAME/YOUR_REPO/releases)
+1. Go to the Releases page in your repository
 2. Download the latest `OpenWebUI-Setup-{version}-Win64.exe`
 
 **Option B: From Actions (Latest Build)**
 
-1. Go to the [Actions tab](https://github.com/YOUR_USERNAME/YOUR_REPO/actions)
-2. Click the latest successful workflow run
-3. Download **OpenWebUI-Windows-Installer** from Artifacts
-4. Extract the ZIP to get the installer
+1. Go to the Actions tab in your repository
+2. Click on "Build Windows Installer" workflow
+3. Select the latest successful workflow run
+4. Scroll down to "Artifacts" section
+5. Download **OpenWebUI-Windows-Installer**
+6. Extract the ZIP to get the installer
 
 #### Install:
 
@@ -130,7 +131,7 @@ For developers who want to build the installer themselves:
 
 ```powershell
 # Clone the repository
-git clone https://github.com/yourusername/open-webui.git
+git clone https://github.com/YOUR_USERNAME/open-webui.git
 cd open-webui
 
 # Build the installer

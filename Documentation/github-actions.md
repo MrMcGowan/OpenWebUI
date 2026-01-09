@@ -2,30 +2,32 @@
 
 ## Overview
 
-This project uses GitHub Actions to automatically build the Windows installer whenever code is pushed to GitHub.
+This project uses GitHub Actions to automatically build the Windows installer whenever code is pushed to GitHub. The workflow runs on GitHub's Windows runners and produces a ready-to-install setup.exe file.
 
 ## Workflows
 
 ### Build Windows Installer
 
-**File:** `.github/workflows/build-windows-installer.yml`
+**File:** `.github/workflows/build-installer.yml`
 
 **Triggers:**
 
-- Push to `main` or `master` branch
-- Push of version tags (e.g., `v1.0.0`)
-- Pull requests
+- Push to `main` or `develop` branch
+- Push of version tags (e.g., `v0.6.43`)
+- Pull requests to `main` or `develop`
 - Manual workflow dispatch
 
 **What it does:**
 
-1. Sets up build environment (Python, Node.js, Inno Setup)
-2. Builds the frontend (SvelteKit)
-3. Builds the backend (PyInstaller)
-4. Creates the installer (Inno Setup)
-5. Calculates SHA256 checksum
-6. Uploads installer as artifact (always)
-7. Creates GitHub Release (only on tag push)
+1. Sets up build environment (Python 3.11, Node.js 20, Inno Setup 6)
+2. Installs frontend dependencies with npm
+3. Builds the frontend (SvelteKit/Vite)
+4. Creates Python virtual environment
+5. Installs backend dependencies and PyInstaller
+6. Builds the backend executable with PyInstaller
+7. Creates the Windows installer with Inno Setup
+8. Uploads installer as artifact (90-day retention)
+9. Creates GitHub Release with installer (only on tag push)
 
 ## Downloading Built Installers
 
@@ -33,10 +35,13 @@ This project uses GitHub Actions to automatically build the Windows installer wh
 
 1. Go to your repository on GitHub
 2. Click the **Actions** tab
-3. Click on the latest workflow run
-4. Scroll down to **Artifacts**
-5. Download **OpenWebUI-Windows-Installer**
-6. Extract the ZIP file to get the installer
+3. Click on "Build Windows Installer" workflow
+4. Select the latest successful workflow run
+5. Scroll down to **Artifacts** section
+6. Download **OpenWebUI-Windows-Installer**
+7. Extract the ZIP file to get the installer
+
+**Note:** Artifacts are retained for 90 days.
 
 ### From Releases (Tagged Versions Only)
 
@@ -44,6 +49,7 @@ This project uses GitHub Actions to automatically build the Windows installer wh
 2. Click the **Releases** section (right sidebar)
 3. Find the latest release
 4. Download the installer from **Assets**
+5. Verify the installer signature if needed
 
 ## Creating a Release
 
@@ -87,34 +93,35 @@ Add this to your README to show build status:
 
 ### Environment
 
-- **OS:** Windows Server 2022 (windows-2022 runner)
-- **Python:** 3.11
-- **Node.js:** 18
-- **Inno Setup:** 6 (installed via Chocolatey)
+- **OS:** Windows Server 2022 (windows-latest runner)
+- **Python:** 3.11 with pip caching
+- **Node.js:** 20 with npm caching
+- **Inno Setup:** 6 (installed via web download during workflow)
 
 ### Build Steps
 
-1. Checkout code
-2. Setup Python with pip caching
-3. Setup Node.js with npm caching
-4. Install Inno Setup via Chocolatey
-5. Create Python virtual environment
-6. Install Python dependencies
-7. Install Node.js dependencies
-8. Build frontend (npm run build)
-9. Build backend (PyInstaller)
-10. Build installer (Inno Setup)
-11. Calculate checksums
-12. Upload artifacts
-13. Create release (if tagged)
+1. **Checkout code** - Clone repository with full history
+2. **Setup Node.js** - Install Node.js 20 with npm cache
+3. **Setup Python** - Install Python 3.11 with pip cache
+4. **Install Inno Setup** - Download and install Inno Setup 6 silently
+5. **Get version** - Extract version from package.json
+6. **Install frontend dependencies** - Run `npm ci` for reproducible builds
+7. **Build frontend** - Run `npm run build` (SvelteKit/Vite)
+8. **Setup Python venv** - Create virtual environment and upgrade pip
+9. **Install Python dependencies** - Install requirements.txt and PyInstaller
+10. **Build executable** - Run PyInstaller with build_windows.spec
+11. **Create installer** - Run Inno Setup compiler on setup.iss
+12. **Get installer details** - Extract filename and size information
+13. **Upload artifact** - Upload installer with 90-day retention
+14. **Create release** - Attach installer to GitHub Release (tags only)
+15. **Build summary** - Display build completion details
 
 ### Artifacts Retention
 
-- **Retention Period:** 30 days
+- **Retention Period:** 90 days
 - **Artifact Name:** OpenWebUI-Windows-Installer
-- **Contents:**
-  - `OpenWebUI-Setup-{version}-Win64.exe`
-  - `SHA256SUMS.txt`
+- **Contents:** `OpenWebUI-Setup-{version}-Win64.exe`
+- **File Size:** Typically 250-400 MB (includes Python runtime and dependencies)
 
 ## Customization
 
@@ -130,19 +137,23 @@ Edit `package.json`:
 
 The version is automatically used in:
 
-- Installer filename
-- Release title
-- Release notes
+- Installer filename (`OpenWebUI-Setup-0.6.43-Win64.exe`)
+- Inno Setup version metadata
+- Build output display
 
-### Modify Release Notes
+### Modify Build Triggers
 
-Edit `.github/workflows/build-windows-installer.yml`:
+Edit `.github/workflows/build-installer.yml`:
 
 ```yaml
-- name: Create Release (on tag push)
-  with:
-    body: |
-      # Your custom release notes here
+on:
+  push:
+    branches:
+      - main        # Add or remove branches
+      - develop
+  pull_request:     # Remove this to disable PR builds
+    branches:
+      - main
 ```
 
 ### Change Retention Period
