@@ -18,9 +18,16 @@ on:
       - 'pyproject.toml'
       - 'uv.lock'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
   build:
-    name: 'Format Backend'
+    name: 'Check Backend Format'
     runs-on: ubuntu-latest
 
     strategy:
@@ -42,8 +49,5 @@ jobs:
           python -m pip install --upgrade pip
           pip install black
 
-      - name: Format backend
-        run: npm run format:backend
-
-      - name: Check for changes after format
-        run: git diff --exit-code
+      - name: Check backend formatting
+        run: black --check backend/
