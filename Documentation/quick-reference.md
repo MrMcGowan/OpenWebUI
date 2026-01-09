@@ -1,6 +1,7 @@
 # Quick Reference Guide
 
 ## Overview
+
 Quick reference for common Open WebUI tasks on Windows Server 2022.
 
 ## Service Management
@@ -39,34 +40,36 @@ sc query OpenWebUIService
 
 ## File Locations
 
-| Item | Location |
-|------|----------|
-| Application | `C:\Program Files\Open WebUI\` |
-| Configuration | `C:\Program Files\Open WebUI\data\.env` |
-| Database | `C:\Program Files\Open WebUI\data\webui.db` |
-| Logs | `C:\Program Files\Open WebUI\logs\` |
-| Uploads | `C:\Program Files\Open WebUI\data\uploads\` |
-| Vector DB | `C:\Program Files\Open WebUI\data\vector_db\` |
+| Item          | Location                                      |
+| ------------- | --------------------------------------------- |
+| Application   | `C:\Program Files\Open WebUI\`                |
+| Configuration | `C:\Program Files\Open WebUI\data\.env`       |
+| Database      | `C:\Program Files\Open WebUI\data\webui.db`   |
+| Logs          | `C:\Program Files\Open WebUI\logs\`           |
+| Uploads       | `C:\Program Files\Open WebUI\data\uploads\`   |
+| Vector DB     | `C:\Program Files\Open WebUI\data\vector_db\` |
 
 ## Default URLs
 
-| Interface | URL |
-|-----------|-----|
-| Web UI (Local) | `http://localhost:8080` |
-| Web UI (Network) | `http://<server-ip>:8080` |
-| API Documentation | `http://localhost:8080/docs` |
-| Health Check | `http://localhost:8080/health` |
+| Interface         | URL                            |
+| ----------------- | ------------------------------ |
+| Web UI (Local)    | `http://localhost:8080`        |
+| Web UI (Network)  | `http://<server-ip>:8080`      |
+| API Documentation | `http://localhost:8080/docs`   |
+| Health Check      | `http://localhost:8080/health` |
 
 ## Common Configuration
 
 ### Change Port
 
 Edit `C:\Program Files\Open WebUI\data\.env`:
+
 ```ini
 WEBUI_PORT=8081
 ```
 
 Restart service:
+
 ```powershell
 Restart-Service OpenWebUIService
 ```
@@ -74,6 +77,7 @@ Restart-Service OpenWebUIService
 ### Connect to Ollama
 
 Edit `.env`:
+
 ```ini
 OLLAMA_BASE_URL=http://localhost:11434
 ```
@@ -81,6 +85,7 @@ OLLAMA_BASE_URL=http://localhost:11434
 ### Enable User Signup
 
 Edit `.env`:
+
 ```ini
 ENABLE_SIGNUP=true
 ```
@@ -227,6 +232,7 @@ $service.GetSecurityDescriptor().Descriptor | Format-List *
 ### Daily Backup Script
 
 Create `backup.ps1`:
+
 ```powershell
 $timestamp = Get-Date -Format "yyyyMMdd"
 $backupDir = "C:\Backups\OpenWebUI"
@@ -238,6 +244,7 @@ Copy-Item "$dataDir\.env" "$backupDir\.env_$timestamp"
 ```
 
 Schedule with Task Scheduler:
+
 ```powershell
 $action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-File C:\Scripts\backup.ps1"
 $trigger = New-ScheduledTaskTrigger -Daily -At 2am
@@ -245,8 +252,8 @@ Register-ScheduledTask -TaskName "OpenWebUI Backup" -Action $action -Trigger $tr
 ```
 
 ## Related Links
+
 - [Windows Installation Guide](windows-installation.md)
 - [Configuration Guide](configuration.md)
 - [Build Guide](build-guide.md)
 - [Troubleshooting Guide](../TROUBLESHOOTING.md)
-

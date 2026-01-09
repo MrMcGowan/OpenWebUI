@@ -1,20 +1,24 @@
 # GitHub Actions - Automated Builds
 
 ## Overview
+
 This project uses GitHub Actions to automatically build the Windows installer whenever code is pushed to GitHub.
 
 ## Workflows
 
 ### Build Windows Installer
+
 **File:** `.github/workflows/build-windows-installer.yml`
 
 **Triggers:**
+
 - Push to `main` or `master` branch
 - Push of version tags (e.g., `v1.0.0`)
 - Pull requests
 - Manual workflow dispatch
 
 **What it does:**
+
 1. Sets up build environment (Python, Node.js, Inno Setup)
 2. Builds the frontend (SvelteKit)
 3. Builds the backend (PyInstaller)
@@ -54,6 +58,7 @@ git push origin v0.6.43
 ```
 
 This will:
+
 - Trigger the build workflow
 - Build the installer
 - Create a GitHub Release
@@ -81,12 +86,14 @@ Add this to your README to show build status:
 ## Workflow Configuration
 
 ### Environment
+
 - **OS:** Windows Server 2022 (windows-2022 runner)
 - **Python:** 3.11
 - **Node.js:** 18
 - **Inno Setup:** 6 (installed via Chocolatey)
 
 ### Build Steps
+
 1. Checkout code
 2. Setup Python with pip caching
 3. Setup Node.js with npm caching
@@ -102,6 +109,7 @@ Add this to your README to show build status:
 13. Create release (if tagged)
 
 ### Artifacts Retention
+
 - **Retention Period:** 30 days
 - **Artifact Name:** OpenWebUI-Windows-Installer
 - **Contents:**
@@ -113,13 +121,15 @@ Add this to your README to show build status:
 ### Change Version Number
 
 Edit `package.json`:
+
 ```json
 {
-  "version": "0.6.43"
+	"version": "0.6.43"
 }
 ```
 
 The version is automatically used in:
+
 - Installer filename
 - Release title
 - Release notes
@@ -127,6 +137,7 @@ The version is automatically used in:
 ### Modify Release Notes
 
 Edit `.github/workflows/build-windows-installer.yml`:
+
 ```yaml
 - name: Create Release (on tag push)
   with:
@@ -137,10 +148,11 @@ Edit `.github/workflows/build-windows-installer.yml`:
 ### Change Retention Period
 
 Edit `.github/workflows/build-windows-installer.yml`:
+
 ```yaml
 - name: Upload installer artifact
   with:
-    retention-days: 90  # Change from 30 to 90 days
+    retention-days: 90 # Change from 30 to 90 days
 ```
 
 ### Add Code Signing
@@ -152,6 +164,7 @@ To sign the installer, add a code signing certificate:
    - `CERT_PASSWORD` - Certificate password
 
 2. Add signing step before "Build installer":
+
 ```yaml
 - name: Import code signing certificate
   run: |
@@ -182,6 +195,7 @@ To sign the installer, add a code signing certificate:
 **Issue:** Some packages fail to install
 
 **Solution:** Add build tools:
+
 ```yaml
 - name: Install Visual Studio Build Tools
   run: choco install visualstudio2022buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools"
@@ -192,6 +206,7 @@ To sign the installer, add a code signing certificate:
 **Issue:** npm build fails
 
 **Solution:** Check Node.js version and package-lock.json:
+
 ```yaml
 - name: Setup Node.js 18
   uses: actions/setup-node@v4
@@ -205,6 +220,7 @@ To sign the installer, add a code signing certificate:
 **Issue:** ISCC.exe not found
 
 **Solution:** Verify Inno Setup installation:
+
 ```yaml
 - name: Verify Inno Setup
   run: |
@@ -217,6 +233,7 @@ To sign the installer, add a code signing certificate:
 **Issue:** Artifact too large or not found
 
 **Solution:** Check file size and path:
+
 ```yaml
 - name: Check installer size
   run: |
@@ -226,16 +243,19 @@ To sign the installer, add a code signing certificate:
 ## Security Considerations
 
 ### Secrets Management
+
 - Never commit certificates or passwords
 - Use GitHub Secrets for sensitive data
 - Rotate secrets regularly
 
 ### Artifact Security
+
 - Artifacts are only accessible to repository collaborators
 - Use private repository for proprietary code
 - Enable branch protection rules
 
 ### Release Security
+
 - Require reviews before merging to main
 - Use signed tags for releases
 - Enable 2FA for repository maintainers
@@ -245,6 +265,7 @@ To sign the installer, add a code signing certificate:
 ### Build Notifications
 
 Enable email notifications:
+
 1. Go to GitHub Settings
 2. Select **Notifications**
 3. Enable **Actions** notifications
@@ -252,6 +273,7 @@ Enable email notifications:
 ### Build Analytics
 
 View build history:
+
 1. Go to **Actions** tab
 2. View workflow runs
 3. Check success rate
@@ -260,10 +282,12 @@ View build history:
 ## Cost Considerations
 
 GitHub Actions is free for public repositories with generous limits:
+
 - **Public repos:** Unlimited minutes
 - **Private repos:** 2,000 minutes/month (free tier)
 
 Windows runners consume minutes at 2x rate:
+
 - 1 minute of Windows = 2 minutes consumed
 - Average build time: ~15-20 minutes
 - Cost per build: ~30-40 minutes
@@ -279,9 +303,9 @@ Windows runners consume minutes at 2x rate:
 7. **Monitor builds** - Check Actions tab regularly for failures
 
 ## Related Links
+
 - [GitHub Actions Troubleshooting](github-actions-troubleshooting.md)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 - [Windows Runner Documentation](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners)
 - [Build Guide](build-guide.md)
 - [Windows Installation Guide](windows-installation.md)
-

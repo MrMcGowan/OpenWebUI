@@ -5,6 +5,7 @@
 ### Release Already Exists Error
 
 **Error Message:**
+
 ```
 RequestError [HttpError]: Validation Failed: {"resource":"Release","code":"already_exists","field":"tag_name"}
 ```
@@ -44,13 +45,15 @@ git push origin v0.6.43
 #### Option 3: Use a New Version Number
 
 Update the version in `package.json`:
+
 ```json
 {
-  "version": "0.6.44"
+	"version": "0.6.44"
 }
 ```
 
 Then create a new tag:
+
 ```bash
 git add package.json
 git commit -m "Bump version to 0.6.44"
@@ -73,6 +76,7 @@ The workflow has been updated to automatically overwrite existing releases. Just
 ### Workflow Permissions Error
 
 **Error Message:**
+
 ```
 Resource not accessible by integration
 ```
@@ -92,6 +96,7 @@ Resource not accessible by integration
 ### Build Fails on Python Dependencies
 
 **Error Message:**
+
 ```
 ERROR: Could not install packages due to an OSError
 ```
@@ -111,6 +116,7 @@ ERROR: Could not install packages due to an OSError
 ### Build Fails on Frontend
 
 **Error Message:**
+
 ```
 npm ERR! code ELIFECYCLE
 ```
@@ -118,6 +124,7 @@ npm ERR! code ELIFECYCLE
 **Solutions:**
 
 1. **Clear npm cache locally:**
+
    ```bash
    npm cache clean --force
    rm -rf node_modules package-lock.json
@@ -138,6 +145,7 @@ npm ERR! code ELIFECYCLE
 ### Inno Setup Not Found
 
 **Error Message:**
+
 ```
 ISCC.exe: command not found
 ```
@@ -160,6 +168,7 @@ The workflow installs Inno Setup automatically. If it still fails:
 ### Artifact Upload Too Large
 
 **Error Message:**
+
 ```
 Warning: Artifact size exceeds limit
 ```
@@ -169,6 +178,7 @@ Warning: Artifact size exceeds limit
 GitHub has a 2 GB limit per artifact. If your installer is too large:
 
 1. **Optimize PyInstaller:**
+
    ```python
    # In build_windows.spec, add to excludes:
    excludes=[
@@ -192,6 +202,7 @@ GitHub has a 2 GB limit per artifact. If your installer is too large:
 ### Workflow Timeout
 
 **Error Message:**
+
 ```
 The job running on runner ... has exceeded the maximum execution time
 ```
@@ -201,11 +212,12 @@ The job running on runner ... has exceeded the maximum execution time
 Default timeout is 6 hours. If builds take too long:
 
 1. **Add timeout to workflow:**
+
    ```yaml
    jobs:
      build:
        runs-on: windows-2022
-       timeout-minutes: 60  # 1 hour
+       timeout-minutes: 60 # 1 hour
    ```
 
 2. **Optimize caching** (already implemented for pip and npm)
@@ -217,6 +229,7 @@ Default timeout is 6 hours. If builds take too long:
 ### Rate Limit Exceeded
 
 **Error Message:**
+
 ```
 API rate limit exceeded
 ```
@@ -243,6 +256,7 @@ GitHub has rate limits for API calls. Usually not an issue, but if it occurs:
 ### Enable Debug Logging
 
 Add repository secrets:
+
 - `ACTIONS_RUNNER_DEBUG` = `true`
 - `ACTIONS_STEP_DEBUG` = `true`
 
@@ -307,6 +321,7 @@ Before pushing tags:
 ### Version Management
 
 Keep versions consistent:
+
 - `package.json`: `"version": "0.6.43"`
 - Tag: `v0.6.43`
 - CHANGELOG.md: `## [0.6.43] - 2026-01-08`
@@ -314,6 +329,7 @@ Keep versions consistent:
 ### Test Workflow Before Tag
 
 Push to main first to test the build:
+
 ```bash
 git push origin main
 # Wait for build to succeed
@@ -361,6 +377,7 @@ gh run watch <run-id>
 The workflow has been updated to handle existing releases. To fix immediately:
 
 **Option A: Delete and recreate**
+
 ```bash
 gh release delete v0.6.43 --yes
 git push origin :refs/tags/v0.6.43
@@ -369,12 +386,14 @@ git push origin v0.6.43
 ```
 
 **Option B: Just re-run**
+
 ```bash
 # The updated workflow will overwrite the existing release
 gh run rerun <run-id>
 ```
 
 **Option C: Manual upload**
+
 1. Build locally: `.\build_installer.ps1`
 2. Go to existing release on GitHub
 3. Edit release
@@ -389,4 +408,3 @@ gh run rerun <run-id>
 - [GitHub CLI Documentation](https://cli.github.com/manual/)
 - [Inno Setup Documentation](https://jrsoftware.org/ishelp/)
 - [PyInstaller Documentation](https://pyinstaller.org/)
-

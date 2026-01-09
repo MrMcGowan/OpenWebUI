@@ -21,6 +21,7 @@ After deleting the release:
 4. Confirm deletion
 
 **OR** use Git command after authenticating:
+
 ```bash
 git push origin :refs/tags/v0.6.43
 ```
@@ -57,6 +58,7 @@ This will trigger the workflow with the fixed code that handles overwrites.
 Since I've already updated the workflow to handle overwrites:
 
 1. **Just push the workflow fix:**
+
    ```bash
    git add -A
    git commit -m "Fix: Handle existing releases in GitHub Actions"
@@ -77,6 +79,7 @@ The workflow will now automatically overwrite the existing v0.6.43 release!
 If you're getting authentication errors, you need to:
 
 ### Option 1: Use GitHub CLI
+
 ```bash
 # Install GitHub CLI
 winget install GitHub.cli
@@ -89,6 +92,7 @@ gh release delete v0.6.43 --yes
 ```
 
 ### Option 2: Use Personal Access Token
+
 ```bash
 # Generate token at: https://github.com/settings/tokens
 # Then configure git:
@@ -98,6 +102,7 @@ git push origin :refs/tags/v0.6.43
 ```
 
 ### Option 3: Use SSH
+
 ```bash
 # If you have SSH keys configured:
 git remote set-url origin git@github.com:MrMcGowan/OpenWebUI.git
@@ -124,4 +129,3 @@ git push origin :refs/tags/v0.6.43
 5. Click **Re-run failed jobs**
 
 **Done!** The workflow will overwrite the existing release automatically. ✅
-

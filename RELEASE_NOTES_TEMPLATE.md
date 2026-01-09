@@ -3,26 +3,32 @@
 ## Version X.Y.Z - YYYY-MM-DD
 
 ### 🎉 New Features
+
 - Feature description
 - Feature description
 
 ### 🐛 Bug Fixes
+
 - Bug fix description
 - Bug fix description
 
 ### 🔧 Improvements
+
 - Improvement description
 - Improvement description
 
 ### 📚 Documentation
+
 - Documentation updates
 - Documentation updates
 
 ### ⚠️ Breaking Changes
+
 - Breaking change description
 - Migration instructions
 
 ### 🔒 Security
+
 - Security fix description
 - Security fix description
 
@@ -33,17 +39,20 @@
 # Version 0.6.43 - January 8, 2026
 
 ### 🎉 New Features
+
 - **Windows Server 2022 Native Installation** - Complete Windows-focused deployment with setup.exe installer
 - **Windows Service Integration** - Runs as native Windows Service with auto-start support
 - **Automated GitHub Actions Builds** - Installer automatically built and published on every release
 
 ### 🔧 Improvements
+
 - Removed Docker dependencies for cleaner Windows deployment
 - Optimized installer size with PyInstaller
 - Added comprehensive PowerShell management commands
 - Improved service logging and error reporting
 
 ### 📚 Documentation
+
 - Added complete Windows installation guide
 - Added build guide for developers
 - Added configuration reference
@@ -51,6 +60,7 @@
 - Added GitHub Actions automation guide
 
 ### 🔒 Security
+
 - Windows Firewall automatically configured
 - Service runs with appropriate permissions
 - Secure default configuration
@@ -58,25 +68,30 @@
 ### 📦 Installation
 
 **System Requirements:**
+
 - Windows Server 2022 (Build 20348 or later)
 - 4 GB RAM minimum (8 GB recommended)
 - 10 GB free disk space
 
 **Download:**
+
 - [OpenWebUI-Setup-0.6.43-Win64.exe](link)
 
 **Installation:**
+
 1. Download the installer
 2. Run as Administrator
 3. Follow the wizard
 4. Access at http://localhost:8080
 
 **Verification:**
+
 ```
 SHA256: <checksum>
 ```
 
 Verify with PowerShell:
+
 ```powershell
 Get-FileHash -Path "OpenWebUI-Setup-0.6.43-Win64.exe" -Algorithm SHA256
 ```
@@ -106,13 +121,16 @@ Before creating a release, update CHANGELOG.md:
 ## [0.6.43] - 2026-01-08
 
 ### Added
+
 - Windows Service integration
 - GitHub Actions automated builds
 
 ### Changed
+
 - Removed Docker dependencies
 
 ### Fixed
+
 - Bug fix description
 ```
 
@@ -126,6 +144,7 @@ git push origin v0.6.43
 ### 3. Automatic Release Creation
 
 GitHub Actions will automatically:
+
 - Build the installer
 - Create the release
 - Generate basic release notes
@@ -184,6 +203,7 @@ Follow [SemVer](https://semver.org/):
 - **Patch (0.0.Z)** - Bug fixes, backward compatible
 
 Examples:
+
 - `v1.0.0` - First stable release
 - `v1.1.0` - Added new feature
 - `v1.1.1` - Fixed bug
@@ -198,6 +218,7 @@ For testing:
 - `v1.0.0-rc.1` - Release candidate
 
 Mark as pre-release in GitHub:
+
 - Check "This is a pre-release" when creating release
 
 ## Hotfix Releases
@@ -212,6 +233,7 @@ For critical bugs:
 6. Merge back to main
 
 Example:
+
 ```bash
 git checkout v1.0.0
 git checkout -b hotfix/1.0.1
@@ -259,4 +281,3 @@ Full release notes: [link]
 
 Thanks to all contributors! 🙏
 ```
-

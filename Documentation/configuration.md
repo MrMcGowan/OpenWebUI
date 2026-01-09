@@ -1,11 +1,13 @@
 # Configuration Guide
 
 ## Overview
+
 This guide covers all configuration options for Open WebUI on Windows Server 2022.
 
 ## Configuration File Location
 
 The main configuration file is located at:
+
 ```
 C:\Program Files\Open WebUI\data\.env
 ```
@@ -324,6 +326,7 @@ Test-NetConnection -ComputerName localhost -Port 8080
 **Issue:** Changes to `.env` file not taking effect
 
 **Solution:**
+
 1. Verify file is saved
 2. Restart the service
 3. Check for syntax errors in `.env` file
@@ -333,6 +336,7 @@ Test-NetConnection -ComputerName localhost -Port 8080
 **Issue:** Service fails to start after configuration change
 
 **Solution:**
+
 1. Check logs: `C:\Program Files\Open WebUI\logs\openwebui_stderr.log`
 2. Restore previous working configuration
 3. Validate configuration syntax
@@ -342,6 +346,7 @@ Test-NetConnection -ComputerName localhost -Port 8080
 **Issue:** Cannot bind to port 8080
 
 **Solution:**
+
 ```powershell
 # Find process using port 8080
 netstat -ano | findstr :8080
@@ -354,7 +359,7 @@ Restart-Service OpenWebUIService
 ```
 
 ## Related Links
+
 - [Windows Installation Guide](windows-installation.md)
 - [Build Guide](build-guide.md)
 - [Troubleshooting Guide](../TROUBLESHOOTING.md)
-

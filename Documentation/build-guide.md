@@ -1,6 +1,7 @@
 # Building the Windows Installer
 
 ## Overview
+
 This guide explains how to build the Open WebUI Windows installer from source on Windows Server 2022.
 
 ## Prerequisites
@@ -74,6 +75,7 @@ npm ci
 ```
 
 This script will:
+
 - Build the frontend (SvelteKit)
 - Build the backend (PyInstaller)
 - Create the installer (Inno Setup)
@@ -81,17 +83,20 @@ This script will:
 #### Option B: Step-by-Step Build
 
 **Build Frontend:**
+
 ```powershell
 npm run build
 ```
 
 **Build Backend:**
+
 ```powershell
 .\venv\Scripts\Activate.ps1
 pyinstaller build_windows.spec --clean --noconfirm
 ```
 
 **Create Installer:**
+
 ```powershell
 & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" installer\setup.iss
 ```
@@ -99,6 +104,7 @@ pyinstaller build_windows.spec --clean --noconfirm
 ### 4. Locate the Installer
 
 The installer will be created in:
+
 ```
 installer\output\OpenWebUI-Setup-{version}-Win64.exe
 ```
@@ -161,11 +167,12 @@ Edit `build_installer.ps1` to customize:
 **Error:** `npm ERR! missing script: build`
 
 **Solution:** Ensure `package.json` has the build script:
+
 ```json
 {
-  "scripts": {
-    "build": "npm run pyodide:fetch && vite build"
-  }
+	"scripts": {
+		"build": "npm run pyodide:fetch && vite build"
+	}
 }
 ```
 
@@ -174,6 +181,7 @@ Edit `build_installer.ps1` to customize:
 **Error:** `ModuleNotFoundError` during execution
 
 **Solution:** Add missing modules to `hiddenimports` in `build_windows.spec`:
+
 ```python
 hiddenimports += [
     'missing.module.name',
@@ -191,6 +199,7 @@ hiddenimports += [
 **Issue:** The output executable is very large (>500 MB)
 
 **Solution:** Optimize PyInstaller build:
+
 1. Add more modules to `excludes` in `build_windows.spec`
 2. Enable UPX compression (already enabled by default)
 3. Remove unnecessary data files
@@ -198,6 +207,7 @@ hiddenimports += [
 ### Build Takes Too Long
 
 **Solution:** Use incremental builds:
+
 ```powershell
 # Skip already-built components
 .\build_installer.ps1 -SkipFrontend  # If frontend hasn't changed
@@ -251,35 +261,35 @@ on:
 jobs:
   build:
     runs-on: windows-2022
-    
+
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-    
-    - name: Install Inno Setup
-      run: choco install innosetup -y
-    
-    - name: Build Installer
-      run: .\build_installer.ps1 -Clean
-    
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: installer
-        path: installer\output\*.exe
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Inno Setup
+        run: choco install innosetup -y
+
+      - name: Build Installer
+        run: .\build_installer.ps1 -Clean
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: installer
+          path: installer\output\*.exe
 ```
 
 ## Related Links
+
 - [Windows Installation Guide](windows-installation.md)
 - [Configuration Guide](configuration.md)
 - [Troubleshooting Guide](troubleshooting.md)
-

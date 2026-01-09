@@ -12,9 +12,11 @@ Replace placeholders in README.md:
 
 ```markdown
 # Change this line:
+
 ![Build Status](https://github.com/YOUR_USERNAME/YOUR_REPO/workflows/Build%20Windows%20Installer/badge.svg)
 
 # To your actual repo:
+
 ![Build Status](https://github.com/yourusername/open-webui/workflows/Build%20Windows%20Installer/badge.svg)
 ```
 
@@ -53,6 +55,7 @@ git push origin main
 ```
 
 GitHub Actions will:
+
 1. Build the frontend and backend
 2. Create the installer
 3. Upload as an artifact (available for 30 days)
@@ -76,6 +79,7 @@ git push origin v0.6.43
 ```
 
 This will:
+
 - Build the installer
 - Create a GitHub Release
 - Attach installer to the release
@@ -109,6 +113,7 @@ Trigger a build without pushing code:
 ### Check Build Status
 
 The build badge in your README will show:
+
 - ✅ Green checkmark - Build passed
 - ❌ Red X - Build failed
 - 🟡 Yellow dot - Build in progress
@@ -124,6 +129,7 @@ Click the badge to see build details.
 ### Build Fails with "Resource Not Found"
 
 **Solution:** Verify all files are committed:
+
 ```bash
 git status
 git add .github/workflows/build-windows-installer.yml
@@ -133,7 +139,8 @@ git push
 
 ### Release Not Created on Tag Push
 
-**Solution:** 
+**Solution:**
+
 1. Check workflow permissions (read/write required)
 2. Verify tag format starts with 'v': `v1.0.0`
 3. Check Actions tab for error messages
@@ -141,6 +148,7 @@ git push
 ### Artifact Upload Fails
 
 **Solution:** Verify installer was created:
+
 - Check build logs
 - Look for "Build installer with Inno Setup" step
 - Ensure Inno Setup installed successfully
@@ -156,7 +164,7 @@ on:
   push:
     branches:
       - main
-      - develop  # Add more branches
+      - develop # Add more branches
     tags:
       - 'v*'
   # Remove pull_request if you don't want PR builds
@@ -171,7 +179,7 @@ Edit the release body in the workflow file:
   with:
     body: |
       # Your custom release notes
-      
+
       ## New Features
       - Feature 1
       - Feature 2
@@ -182,6 +190,7 @@ Edit the release body in the workflow file:
 Get Slack/Discord notifications:
 
 1. Add notification step at end of workflow:
+
 ```yaml
 - name: Notify on success
   if: success()
@@ -214,6 +223,7 @@ See [GitHub Actions Guide](github-actions.md) for details.
 ### Build Statistics
 
 Track:
+
 - Success rate
 - Average build time
 - Failures and causes
@@ -261,4 +271,3 @@ For private repos, ~50-66 builds per month on free tier.
 ---
 
 **You're all set! Push your code and watch the magic happen! 🚀**
-

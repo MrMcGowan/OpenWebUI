@@ -1,10 +1,12 @@
 # Windows Installation Guide
 
 ## Overview
-This guide provides step-by-step instructions for installing Open WebUI on Windows Server 2022 using the 
+
+This guide provides step-by-step instructions for installing Open WebUI on Windows Server 2022 using the
 setup.exe installer.
 
 ## Prerequisites
+
 - Windows Server 2022 (Build 20348 or later)
 - Administrator privileges
 - 4 GB RAM minimum (8 GB recommended)
@@ -94,6 +96,7 @@ sc query OpenWebUIService
 ### Configuration File Location
 
 The main configuration file is located at:
+
 ```
 C:\Program Files\Open WebUI\data\.env
 ```
@@ -119,6 +122,7 @@ OPENAI_API_BASE_URL=https://api.openai.com/v1
 ```
 
 After editing, restart the service:
+
 ```powershell
 Restart-Service OpenWebUIService
 ```
@@ -133,6 +137,7 @@ Restart-Service OpenWebUIService
    - Look for errors from "OpenWebUIService"
 
 2. Check service logs:
+
    ```
    C:\Program Files\Open WebUI\logs\openwebui_stdout.log
    C:\Program Files\Open WebUI\logs\openwebui_stderr.log
@@ -146,11 +151,13 @@ Restart-Service OpenWebUIService
 ### Cannot Access from Network
 
 1. Verify Windows Firewall rule:
+
    ```powershell
    Get-NetFirewallRule -DisplayName "Open WebUI"
    ```
 
 2. Add firewall rule if missing:
+
    ```powershell
    New-NetFirewallRule -DisplayName "Open WebUI" -Direction Inbound -Protocol TCP -LocalPort 8080 -Action Allow
    ```
@@ -189,6 +196,7 @@ Start-Process $uninstaller.FullName -ArgumentList "/SILENT" -Wait
 ```
 
 The uninstaller automatically:
+
 - Stops the Windows service
 - Removes the service registration
 - Removes firewall rules
@@ -197,7 +205,7 @@ The uninstaller automatically:
 **Note:** User data in the `data` folder may be preserved. Delete manually if needed.
 
 ## Related Links
+
 - [Configuration Guide](configuration.md)
 - [Troubleshooting Guide](troubleshooting.md)
 - [Security Best Practices](security.md)
-
