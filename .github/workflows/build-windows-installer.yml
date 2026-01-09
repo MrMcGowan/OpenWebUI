@@ -1,0 +1,135 @@
+name: Build Windows Installer
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows-installer:
+    runs-on: windows-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Inno Setup
+        run: |
+          $InnoSetupUrl = "https://jrsoftware.org/download.php/is.exe"
+          $InstallerPath = "$env:TEMP\innosetup.exe"
+          Write-Host "Downloading Inno Setup..."
+          Invoke-WebRequest -Uri $InnoSetupUrl -OutFile $InstallerPath
+          Write-Host "Installing Inno Setup..."
+          Start-Process -FilePath $InstallerPath -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/SP-" -Wait
+          Write-Host "Inno Setup installed successfully"
+        shell: powershell
+
+      - name: Verify prerequisites
+        run: |
+          Write-Host "Checking prerequisites..." -ForegroundColor Yellow
+          python --version
+          node --version
+          npm --version
+          $InnoSetupPath = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (Test-Path $InnoSetupPath) {
+            Write-Host "Inno Setup found at: $InnoSetupPath" -ForegroundColor Green
+          } else {
+            Write-Host "ERROR: Inno Setup not found" -ForegroundColor Red
+            exit 1
+          }
+        shell: powershell
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install -r backend/requirements.txt
+          pip install pyinstaller
+
+      - name: Build backend executable
+        run: pyinstaller build_windows.spec --clean --noconfirm
+
+      - name: Verify build outputs
+        run: |
+          Write-Host "Checking build outputs..." -ForegroundColor Yellow
+          if (Test-Path "dist\OpenWebUI.exe") {
+            $size = (Get-Item "dist\OpenWebUI.exe").Length / 1MB
+            Write-Host "✓ OpenWebUI.exe exists (Size: $([math]::Round($size, 2)) MB)" -ForegroundColor Green
+          } else {
+            Write-Host "✗ OpenWebUI.exe not found" -ForegroundColor Red
+            exit 1
+          }
+          if (Test-Path "build") {
+            Write-Host "✓ Frontend build directory exists" -ForegroundColor Green
+          } else {
+            Write-Host "✗ Frontend build directory not found" -ForegroundColor Red
+            exit 1
+          }
+        shell: powershell
+
+      - name: Build installer
+        run: |
+          $InnoSetupPath = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          Write-Host "Building installer with Inno Setup..." -ForegroundColor Yellow
+          & $InnoSetupPath "installer\setup.iss"
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "✗ Installer build failed" -ForegroundColor Red
+            exit 1
+          }
+          Write-Host "✓ Installer build complete" -ForegroundColor Green
+        shell: powershell
+
+      - name: List installer files
+        run: |
+          Write-Host "Installer files:" -ForegroundColor Cyan
+          Get-ChildItem installer\output -Recurse | ForEach-Object {
+            $size = if ($_.PSIsContainer) { "DIR" } else { "$([math]::Round($_.Length/1MB, 2)) MB" }
+            Write-Host "  $($_.Name) - $size"
+          }
+        shell: powershell
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenWebUI-Windows-Installer
+          path: installer/output/*.exe
+          retention-days: 30
+
+      - name: Create release (on tag push)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: installer/output/*.exe
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
