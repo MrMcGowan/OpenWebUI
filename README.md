@@ -1,18 +1,23 @@
-# Open WebUI 👋
+# Open WebUI for Windows Server 2022 👋
 
-![GitHub stars](https://img.shields.io/github/stars/open-webui/open-webui?style=social)
-![GitHub forks](https://img.shields.io/github/forks/open-webui/open-webui?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/open-webui/open-webui?style=social)
-![GitHub repo size](https://img.shields.io/github/repo-size/open-webui/open-webui)
-![GitHub language count](https://img.shields.io/github/languages/count/open-webui/open-webui)
-![GitHub top language](https://img.shields.io/github/languages/top/open-webui/open-webui)
-![GitHub last commit](https://img.shields.io/github/last-commit/open-webui/open-webui?color=red)
-[![Discord](https://img.shields.io/badge/Discord-Open_WebUI-blue?logo=discord&logoColor=white)](https://discord.gg/5rJgQTnV4s)
-[![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/tjbck)
+![Build Status](https://github.com/YOUR_USERNAME/YOUR_REPO/workflows/Build%20Windows%20Installer/badge.svg)
+![Windows Server 2022](https://img.shields.io/badge/Windows%20Server-2022-blue?logo=windows&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.11+-blue?logo=python&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
 
 ![Open WebUI Banner](./banner.png)
 
-**Open WebUI is an [extensible](https://docs.openwebui.com/features/plugin/), feature-rich, and user-friendly self-hosted AI platform designed to operate entirely offline.** It supports various LLM runners like **Ollama** and **OpenAI-compatible APIs**, with **built-in inference engine** for RAG, making it a **powerful AI deployment solution**.
+**Open WebUI for Windows Server 2022** is a streamlined, Windows-native version of the Open WebUI AI platform. This fork is specifically designed for **Windows Server 2022** with a convenient **setup.exe installer** for enterprise deployments.
+
+**Key Features:**
+- ✅ Windows Server 2022 native installation
+- ✅ One-click setup.exe installer
+- ✅ Windows Service integration
+- ✅ Automatic startup configuration
+- ✅ Simplified deployment for Windows environments
+- ✅ No Docker or WSL required
+
+**Open WebUI** is an [extensible](https://docs.openwebui.com/features/plugin/), feature-rich, and user-friendly self-hosted AI platform designed to operate entirely offline. It supports various LLM runners like **Ollama** and **OpenAI-compatible APIs**, with **built-in inference engine** for RAG, making it a **powerful AI deployment solution**.
 
 Passionate about open-source AI? [Join our team →](https://careers.openwebui.com/)
 
@@ -27,7 +32,7 @@ For more information, be sure to check out our [Open WebUI Documentation](https:
 
 ## Key Features of Open WebUI ⭐
 
-- 🚀 **Effortless Setup**: Install seamlessly using Docker or Kubernetes (kubectl, kustomize or helm) for a hassle-free experience with support for both `:ollama` and `:cuda` tagged images.
+- 🚀 **Effortless Windows Setup**: Install seamlessly on Windows Server 2022 with a single setup.exe installer. No Docker, WSL, or Linux knowledge required.
 
 - 🤝 **Ollama/OpenAI API Integration**: Effortlessly integrate OpenAI-compatible APIs for versatile conversations alongside Ollama models. Customize the OpenAI API URL to link with **LMStudio, GroqCloud, Mistral, OpenRouter, and more**.
 
@@ -83,78 +88,170 @@ Want to learn more about Open WebUI's features? Check out our [Open WebUI docume
 
 We are incredibly grateful for the generous support of our sponsors. Their contributions help us to maintain and improve our project, ensuring we can continue to deliver quality work to our community. Thank you!
 
-## How to Install 🚀
+## How to Install on Windows Server 2022 🚀
 
-### Installation via Python pip 🐍
+### Method 1: Using the Setup.exe Installer (Recommended)
 
-Open WebUI can be installed using pip, the Python package installer. Before proceeding, ensure you're using **Python 3.11** to avoid compatibility issues.
+The easiest way to install Open WebUI on Windows Server 2022:
 
-1. **Install Open WebUI**:
-   Open your terminal and run the following command to install Open WebUI:
+#### Download Options:
 
-   ```bash
-   pip install open-webui
-   ```
+**Option A: From Releases (Stable)**
+1. Go to the [Releases page](https://github.com/YOUR_USERNAME/YOUR_REPO/releases)
+2. Download the latest `OpenWebUI-Setup-{version}-Win64.exe`
 
-2. **Running Open WebUI**:
-   After installation, you can start Open WebUI by executing:
+**Option B: From Actions (Latest Build)**
+1. Go to the [Actions tab](https://github.com/YOUR_USERNAME/YOUR_REPO/actions)
+2. Click the latest successful workflow run
+3. Download **OpenWebUI-Windows-Installer** from Artifacts
+4. Extract the ZIP to get the installer
 
-   ```bash
-   open-webui serve
-   ```
+#### Install:
 
-This will start the Open WebUI server, which you can access at [http://localhost:8080](http://localhost:8080)
+1. **Run as Administrator** - Right-click the installer and select "Run as administrator"
+2. **Follow the wizard** - Accept defaults or customize installation location
+3. **Access the application** - Navigate to `http://localhost:8080` in your browser
 
-### Quick Start with Docker 🐳
+The installer automatically:
+- ✅ Installs all dependencies
+- ✅ Configures Windows Firewall
+- ✅ Sets up Windows Service
+- ✅ Configures auto-start on boot
 
-> [!NOTE]  
-> Please note that for certain Docker environments, additional configurations might be needed. If you encounter any connection issues, our detailed guide on [Open WebUI Documentation](https://docs.openwebui.com/) is ready to assist you.
+**📖 [Detailed Installation Guide](Documentation/windows-installation.md)**
 
-> [!WARNING]
-> When using Docker to install Open WebUI, make sure to include the `-v open-webui:/app/backend/data` in your Docker command. This step is crucial as it ensures your database is properly mounted and prevents any loss of data.
+### Method 2: Build from Source
 
-> [!TIP]  
-> If you wish to utilize Open WebUI with Ollama included or CUDA acceleration, we recommend utilizing our official images tagged with either `:cuda` or `:ollama`. To enable CUDA, you must install the [Nvidia CUDA container toolkit](https://docs.nvidia.com/dgx/nvidia-container-runtime-upgrade/) on your Linux/WSL system.
+For developers who want to build the installer themselves:
 
-### Installation with Default Configuration
+```powershell
+# Clone the repository
+git clone https://github.com/yourusername/open-webui.git
+cd open-webui
 
-- **If Ollama is on your computer**, use this command:
+# Build the installer
+.\build_installer.ps1
+```
 
-  ```bash
-  docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
-  ```
+The installer will be created in `installer\output\`
 
-- **If Ollama is on a Different Server**, use this command:
+**📖 [Build Guide](Documentation/build-guide.md)**
 
-  To connect to Ollama on another server, change the `OLLAMA_BASE_URL` to the server's URL:
+### Method 3: Manual Installation (Development)
 
-  ```bash
-  docker run -d -p 3000:8080 -e OLLAMA_BASE_URL=https://example.com -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
-  ```
+For development and testing:
 
-- **To run Open WebUI with Nvidia GPU support**, use this command:
+```powershell
+# Install Python dependencies
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r backend\requirements.txt
 
-  ```bash
-  docker run -d -p 3000:8080 --gpus all --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:cuda
-  ```
+# Install Node.js dependencies and build frontend
+npm ci
+npm run build
 
-### Installation for OpenAI API Usage Only
+# Start the application
+.\start.bat
+```
 
-- **If you're only using OpenAI API**, use this command:
+Access the application at `http://localhost:8080`
 
-  ```bash
-  docker run -d -p 3000:8080 -e OPENAI_API_KEY=your_secret_key -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
-  ```
+## System Requirements
 
-### Installing Open WebUI with Bundled Ollama Support
+- **Operating System:** Windows Server 2022 (Build 20348 or later)
+- **RAM:** 4 GB minimum (8 GB recommended)
+- **Disk Space:** 10 GB minimum
+- **Processor:** 64-bit processor
+- **Network:** Internet connection for initial setup
 
-This installation method uses a single container image that bundles Open WebUI with Ollama, allowing for a streamlined setup via a single command. Choose the appropriate command based on your hardware setup:
+## Quick Start
 
-- **With GPU Support**:
-  Utilize GPU resources by running the following command:
+After installation:
 
-  ```bash
-  docker run -d -p 3000:8080 --gpus=all -v ollama:/root/.ollama -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:ollama
+1. **Access the Web Interface**
+   - Open browser to `http://localhost:8080`
+   - Or from network: `http://<server-ip>:8080`
+
+2. **Create Admin Account**
+   - First user automatically becomes admin
+
+3. **Configure AI Models**
+   - Connect to Ollama, OpenAI, or other compatible APIs
+   - Start chatting with AI models
+
+## Service Management
+
+Open WebUI runs as a Windows Service:
+
+```powershell
+# Start service
+Start-Service OpenWebUIService
+
+# Stop service
+Stop-Service OpenWebUIService
+
+# Check status
+Get-Service OpenWebUIService
+```
+
+Or use the Windows Services console (`services.msc`)
+
+---
+
+## Configuration
+
+Configuration is stored in `C:\Program Files\Open WebUI\data\.env`
+
+Common settings:
+
+```ini
+WEBUI_HOST=0.0.0.0
+WEBUI_PORT=8080
+DATA_DIR=.\data
+WEBUI_SECRET_KEY=<auto-generated>
+```
+
+**📖 [Full Configuration Guide](Documentation/configuration.md)**
+
+---
+
+## Documentation
+
+- **[Windows Installation Guide](Documentation/windows-installation.md)** - Complete installation instructions
+- **[Build Guide](Documentation/build-guide.md)** - How to build the installer from source
+- **[GitHub Actions Guide](Documentation/github-actions.md)** - Automated builds and releases
+- **[Configuration Guide](Documentation/configuration.md)** - Detailed configuration options
+- **[Troubleshooting Guide](TROUBLESHOOTING.md)** - Common issues and solutions
+
+---
+
+## Upstream Project
+
+This is a Windows Server 2022 focused fork of [Open WebUI](https://github.com/open-webui/open-webui).
+
+For the original cross-platform version with Docker support, see:
+- **Original Repository:** https://github.com/open-webui/open-webui
+- **Documentation:** https://docs.openwebui.com/
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## Support
+
+For Windows-specific issues with this fork:
+- Check the [Troubleshooting Guide](TROUBLESHOOTING.md)
+- Review the [Documentation](Documentation/)
+- Open an issue on this repository
+
+For general Open WebUI features and functionality:
+- Visit the [official Open WebUI documentation](https://docs.openwebui.com/)
+- Join the [Open WebUI Discord](https://discord.gg/5rJgQTnV4s)
   ```
 
 - **For CPU Only**:
